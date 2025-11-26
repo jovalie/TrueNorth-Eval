@@ -1,0 +1,1762 @@
+[
+  {
+    "label": "TrueNorth01",
+    "query": "Lately, I just feel exhausted from everything: school, work, life. Is this normal?",
+    "expected_response": "Totally valid. Burnout doesn't mean you're weak; it means you've been strong for too long. Would you like help creating space for rest and recovery?",
+    "theme": "Motivation & Burnout,",
+  "design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth02",
+    "query": "Every time I present my work in meetings, I get so nervous. How do I build confidence?",
+    "expected_response": "Presenting your work can be tough. Would you like to walk through some ways to prepare and show up with more self-assurance?",
+    "theme": "Confidence & Self-Efficacy",
+ "design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2, MR6"
+  },
+  {
+    "label": "TrueNorth03",
+    "query": "I used to love tech but lately I've lost interest. Does that mean I picked the wrong path?",
+    "expected_response": "Not necessarily. Passion can ebb and flow. Would you like to explore what drew you here in the first place\u2014and whether that still resonates?",
+    "theme": "Passion & Career Purpose",
+ "design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    }, 
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth04",
+    "query": "My parents think tech wastes girls' time. It's hard to prove them wrong.",
+    "expected_response": "That pressure is real. But your vision matters. Would you like help thinking through how to stay grounded and assert your path?",
+    "theme": "Family Expectations",
+ "design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR3"
+  },
+  {
+    "label": "TrueNorth05",
+    "query": "My male colleague keeps taking credit for our shared work. I don't want to seem petty, but it stings.",
+    "expected_response": "That's frustrating and not okay. Would you like to talk through a way to assert your contributions respectfully?",
+    "theme": "Male Allyship",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR1"
+  },
+  {
+    "label": "TrueNorth06",
+    "query": "I've reported a few concerns to HR but nothing seems to change. What now?",
+    "expected_response": "You're not alone in feeling stuck. Would you like help identifying other support options or how to escalate safely?",
+    "theme": "HR & Reporting Challenges",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth07",
+    "query": "I dress down at work just to be taken seriously. I miss expressing myself.",
+    "expected_response": "You deserve to feel both respected and authentic. Want to explore ways to reclaim your style without compromising your voice?",
+    "theme": "Impression Management",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth08",
+    "query": "I feel guilty taking time off even when I'm overwhelmed.",
+    "expected_response": "You are allowed to rest. Guilt doesn't mean rest isn't necessary. Would it help to plan a realistic break together?",
+    "theme": "Work-Life Balance",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth09",
+    "query": "I\u2019ve been trying to find a female mentor in tech but haven\u2019t had luck.",
+    "expected_response": "That\u2019s a common challenge. Would you like help identifying platforms or people who could support you informally?",
+    "theme": "Mentorship Gaps",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR5"
+  },
+  {
+    "label": "TrueNorth10",
+    "query": "I saw something that needed fixing in our team, so I took the lead. Is that overstepping?",
+    "expected_response": "Not at all. That's initiative and leadership. Would you like help communicating your contribution confidently?",
+    "theme": "Proactive Leadership",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth11",
+    "query": "I'm dealing with issue number 11 related to being a woman in STEM. How do I navigate this?",
+    "expected_response": "That's a valid concern. TrueNorth can support you in issue number 11. Would you like a step-by-step approach?",
+    "theme": "General Support",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+ 
+  {
+    "label": "TrueNorth12",
+    "query": "I'm the only woman on my engineering team, and it's starting to feel isolating.",
+    "expected_response": "That isolation can take a toll. Would you like to talk through ways to build a connection or find external support?",
+    "theme": "Gendered Culture",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth13",
+    "query": "Every time I speak up in meetings, I get interrupted. How do I handle that?",
+    "expected_response": "You're not alone. Would you like to practice ways to hold space and assert your voice?",
+    "theme": "Male Allyship",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR1"
+  },
+  {
+    "label": "TrueNorth14",
+    "query": "I'm thinking of applying for a promotion, but I don't feel ready even though others say I am.",
+    "expected_response": "Imposter feelings are common, but they don't define your worth. Would you like to review your accomplishments together?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth15",
+    "query": "A male colleague made a sexist joke and everyone just laughed. I don't know if I should say something.",
+    "expected_response": "That's upsetting and valid to question. Want help thinking through a response that feels safe and assertive?",
+    "theme": "Gendered Culture",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR1"
+  },
+  {
+    "label": "TrueNorth16",
+    "query": "I've just returned from maternity leave and feel out of sync with the team.",
+    "expected_response": "That transition can feel overwhelming. Want to chat through ways to reintegrate with clarity and confidence?",
+    "theme": "Work-Life Balance",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth17",
+    "query": "I want to ask for a raise but I'm scared they'll say no or think I'm too aggressive.",
+    "expected_response": "Negotiating your worth is powerful. Want help preparing your ask and backing it with confidence?",
+    "theme": "Impression Management",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth18",
+    "query": "I'm expected to organize every team birthday and coffee run even though it's not my role.",
+    "expected_response": "That sounds like gendered expectations at play. Would you like to explore how to set boundaries here?",
+    "theme": "Stereotypes at Work",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR1"
+  },
+  {
+    "label": "TrueNorth19",
+    "query": "My manager keeps giving leadership opportunities to guys, even when I volunteer.",
+    "expected_response": "That's frustrating and unfair. Would you like to talk through ways to advocate for equitable opportunities?",
+    "theme": "Gendered Culture",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth20",
+    "query": "I love my field, but I'm struggling to find other women I can talk to about it.",
+    "expected_response": "Community matters. Would you like help finding groups or networks to connect with like-minded women in STEM?",
+    "theme": "Mentorship Gaps",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR5"
+  },
+  {
+    "label": "TrueNorth21",
+    "query": "I worry I'm not technical enough to keep up with my peers in data science.",
+    "expected_response": "Comparison can be draining. Would you like to map out what skills you do bring, and where you'd like to grow?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth22",
+    "query": "They keep asking me to take notes even though I'm the project lead.",
+    "expected_response": "That's a classic stereotype in action. Want help asserting your role with clarity?",
+    "theme": "Stereotypes at Work",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR1"
+  },
+  {
+    "label": "TrueNorth23",
+    "query": "I get invited to meetings but rarely get to speak. Feels performative.",
+    "expected_response": "Feeling sidelined is hard. Would you like to brainstorm strategies to assert your presence more effectively?",
+    "theme": "Impression Management",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth24",
+    "query": "My advisor keeps brushing off my ideas in research meetings.",
+    "expected_response": "That's discouraging. Want help framing your contributions so they land with impact?",
+    "theme": "Mentorship Gaps",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth25",
+    "query": "I don't want to be the 'angry woman' but I'm tired of staying quiet.",
+    "expected_response": "You're allowed to set boundaries without guilt. Want help expressing concerns firmly but constructively?",
+    "theme": "Impression Management",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth26",
+    "query": "I struggle with networking, it always feels fake to me.",
+    "expected_response": "That's more common than you think. Would you like tips on authentic networking that aligns with your values?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth27",
+    "query": "I got a new manager who doesn't acknowledge my past work at all.",
+    "expected_response": "That can feel invalidating. Want help highlighting your experience in a way that gets recognized?",
+    "theme": "Proactive Leadership",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth28",
+    "query": "I have so many ideas but I'm afraid they're not good enough to share.",
+    "expected_response": "Your ideas matter. Would you like to walk through a few and see how we can frame them confidently?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth29",
+    "query": "I want to transition from academia to industry but I don't know where to start.",
+    "expected_response": "That's a big step but totally doable. Want to break it down into manageable stages together?",
+    "theme": "Career Navigation",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR5"
+  },
+  {
+    "label": "TrueNorth30",
+    "query": "I feel invisible at work unless I overperform. It's exhausting.",
+    "expected_response": "You shouldn't have to prove your worth constantly. Want to explore how to set healthier expectations?",
+    "theme": "Work-Life Balance",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+
+  {
+    "label": "TrueNorth31  ",
+    "query": "I get anxious before tech interviews, especially with male-dominated panels.",
+    "expected_response": "That's understandable. Would you like to practice or build a strategy to feel more grounded before the interview?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth32",
+    "query": "My internship manager keeps calling me sweetie and dear it makes me uncomfortable.",
+    "expected_response": "You deserve respect and professionalism. Want help crafting a response that sets a boundary?",
+    "theme": "Stereotypes at Work",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth33",
+    "query": "I worry that if I speak too directly, I'll be labeled difficult.",
+    "expected_response": "That is a frustrating double standard. Would you like support in balancing assertiveness and clarity?",
+    "theme": "Impression Management",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth34",
+    "query": "I want to switch into a tech career but don't have a computer science background.",
+    "expected_response": "Many successful tech professionals started in other fields. Want help building a learning plan?",
+    "theme": "Career Navigation",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth35",
+    "query": "I feel left behind when everyone talks about tools I haven't used yet.",
+    "expected_response": "It's okay not to know everything; growth takes time. Would you like a learning checklist?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth36",
+    "query": "People act surprised when I tell them I'm a software engineer.",
+    "expected_response": "That bias isn't about you, it's about stereotypes. Want to talk about how to respond with confidence?",
+    "theme": "Stereotypes at Work",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth37",
+    "query": "I'm afraid if I take maternity leave, I'll fall behind my peers.",
+    "expected_response": "Taking care of yourself and your family is not a setback. Want to explore ways to plan for your return?",
+    "theme": "Work-Life Balance",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth38",
+    "query": "I often feel pressure to represent all women in meetings.",
+    "expected_response": "You don't have to carry that weight alone. Want to talk through strategies to set that burden down?",
+    "theme": "Gendered Culture",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth39",
+    "query": "The guys on my team always make decisions over drinks,I'm never invited.",
+    "expected_response": "That's exclusionary and unfair. Would you like to explore ways to address it or propose alternatives?",
+    "theme": "Gendered Culture",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth40",
+    "query": "I feel guilty asking for accommodations, even when I need them.",
+    "expected_response": "Your needs are valid. Want to go over how to ask confidently and clearly?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth41",
+    "query": "People keep asking me to mentor others, but I barely have time for myself.",
+    "expected_response": "It's okay to say no. Want help setting limits that honor your energy?",
+    "theme": "Work-Life Balance",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth42",
+    "query": "I want to publish my research, but I'm scared it's not good enough.",
+    "expected_response": "Your voice matters. Want support reviewing and refining your work before submitting?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth43",
+    "query": "My boss always assumes I'll take the minutes in meetings even though I'm the most senior.",
+    "expected_response": "That's gendered labor. Want help crafting a response that redistributes responsibilities?",
+    "theme": "Stereotypes at Work",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth44",
+    "query": "I'm not sure if I should bring up a microaggression I experienced during our team retreat.",
+    "expected_response": "Your experience is valid. Want to talk through the options for speaking up safely?",
+    "theme": "Gendered Culture",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth45",
+    "query": "I don't see any women in leadership where I work. It makes me question my future here.",
+    "expected_response": "Representation matters. Want to talk through your long-term goals and options?",
+    "theme": "Mentorship Gaps",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth46",
+    "query": "I often feel like my ideas don't get taken seriously until a man repeats them.",
+    "expected_response": "That's a known dynamic and it's not okay. Want help making your ideas stick?",
+    "theme": "Male Allyship",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth47",
+    "query": "I want to start a tech meetup for women in my area but I'm nervous no one will come.",
+    "expected_response": "That's brave and inspiring. Want help planning and promoting it with confidence?",
+    "theme": "Proactive Leadership",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth48",
+    "query": "My mentor keeps encouraging me to stay in academia, but I'm more interested in startups.",
+    "expected_response": "It's okay to forge your own path. Want help mapping your next steps outside the ivory tower?",
+    "theme": "Career Navigation",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth49",
+    "query": "I\u2019m worried that taking time off for caregiving will make me look less committed.",
+    "expected_response": "Care work is real work. Want to discuss how to stay connected while protecting your time?",
+    "theme": "Work-Life Balance",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth50",
+    "query": "A male coworker constantly talks over me. Management hasn't done anything.",
+    "expected_response": "That's a tough spot. Want to work on ways to address it directly or escalate calmly?",
+    "theme": "Male Allyship",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth51",
+    "query": "Everyone else seems to have it all figured out. I feel like a fraud.",
+    "expected_response": "That's imposter syndrome talking. Want to reflect on how far you've come together?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth52",
+    "query": "They keep saying you're so articulate like it's a surprise. It's getting old.",
+    "expected_response": "That's coded bias. Want help navigating that kind of feedback without internalizing it?",
+    "theme": "Stereotypes at Work",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth53",
+    "query": "I'm constantly afraid of making mistakes, it's exhausting.",
+    "expected_response": "You're allowed to be a learner. Would you like help reframing failure as growth?",
+    "theme": "Motivation & Burnout",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth54",
+    "query": "My supervisor is supportive but still gives all high-visibility projects to the men.",
+    "expected_response": "That's an equity gap. Want help crafting a request for more fair opportunities?",
+    "theme": "Gendered Culture",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth55",
+    "query": "I want to build a personal brand online but feel shy about sharing my work.",
+    "expected_response": "Visibility can feel vulnerable. Want help sharing authentically and confidently?",
+    "theme": "Impression Management",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth56",
+    "query": "In group projects, I always end up doing all the planning. Is that just my role now?",
+    "expected_response": "You deserve shared responsibility. Want to strategize how to delegate next time?",
+    "theme": "Stereotypes at Work",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth57",
+    "query": "I'm struggling to get my voice heard in cross-functional meetings.",
+    "expected_response": "That's frustrating. Want help with strategies to make space and speak up with confidence?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth58",
+    "query": "Sometimes I wonder if tech is worth it; everything feels so male-dominated.",
+    "expected_response": "That frustration is real. Want to reconnect with your goals and why you started?",
+    "theme": "Motivation & Burnout",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth59",
+    "query": "I don't know how to explain my job to my family; they think I work with robots.",
+    "expected_response": "Explaining tech roles can be tough. Want help crafting a relatable way to describe what you do?",
+    "theme": "Family Expectations",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth60",
+    "query": "I want to advocate for DEI at work but don't know where to begin.",
+    "expected_response": "That's a powerful initiative. Want help creating a starting point or pitch?",
+    "theme": "Proactive Leadership",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth61",
+    "query": "I don't belong in STEM. Everyone's smarter, faster, more confident.",
+    "expected_response": "Belonging isn't about being perfect, it's about showing up. Want to talk about what you bring to the table?",
+    "theme": "Confidence & Self-Efficacy",
+"design_alignment": {
+      "DP1": [
+        "MR2"
+      ],
+      "DP2": [
+        "MR6"
+      ],
+      "DP3": [
+        "MR6"
+      ]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth62",
+    "query": "The team culture here feels very 'boys club' - how do I navigate this?",
+    "expected_response": "That exclusionary culture is tough to navigate. Want to discuss strategies for building connections and asserting your place?",
+    "theme": "Gendered Culture",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR5"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1, MR5"
+  },
+  {
+    "label": "TrueNorth63",
+    "query": "People keep assuming I'm the designer when I'm actually the lead engineer.",
+    "expected_response": "That assumption reflects gender stereotypes, not your capabilities. Want help correcting these misperceptions professionally?",
+    "theme": "Stereotypes at Work",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1"
+  },
+  {
+    "label": "TrueNorth64",
+    "query": "I want to speak up in meetings but I'm worried about being perceived as aggressive.",
+    "expected_response": "That double bind is frustrating. Let's work on strategies to communicate assertively while staying true to yourself.",
+    "theme": "Impression Management",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2, MR6"
+  },
+  {
+    "label": "TrueNorth65",
+    "query": "I feel like I need to choose between being a good parent and advancing my career.",
+    "expected_response": "That's a false choice imposed by outdated systems. Want to explore ways to integrate both priorities authentically?",
+    "theme": "Work-Life Balance",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth66",
+    "query": "I'm the go-to person for emotional labor on the team but get no recognition for it.",
+    "expected_response": "That invisible work deserves acknowledgment. Want help documenting and advocating for recognition of these contributions?",
+    "theme": "Work-Life Balance",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth67",
+    "query": "I want to change teams but I'm worried about burning bridges.",
+    "expected_response": "Professional growth sometimes requires change. Want help planning a transition that maintains positive relationships?",
+    "theme": "Impression Management",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth68",
+    "query": "My male teammates get praise for the same work I do, but I get 'helpful' suggestions.",
+    "expected_response": "That differential treatment isn't fair. Want to discuss how to advocate for equitable recognition?",
+    "theme": "Male Allyship",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1"
+  },
+  {
+    "label": "TrueNorth69",
+    "query": "I need allies but don't know how to identify genuine supporters.",
+    "expected_response": "Building authentic alliances takes time. Want help recognizing green flags and building those relationships strategically?",
+    "theme": "Male Allyship",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR5"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR5"
+  },
+  {
+    "label": "TrueNorth70",
+    "query": "When I advocate for myself, colleagues say I should be 'more grateful.'",
+    "expected_response": "That's a classic deflection tactic. Want help responding to this kind of pushback while maintaining your advocacy?",
+    "theme": "Male Allyship",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1, MR6"
+  },
+  {
+    "label": "TrueNorth71",
+    "query": "My male manager only gives constructive feedback to the men on our team.",
+    "expected_response": "That's inequitable development support. Want help requesting the feedback you need to grow professionally?",
+    "theme": "Male Allyship",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1"
+  },
+  {
+    "label": "TrueNorth72",
+    "query": "I've been looking for a sponsor for months but keep hitting dead ends.",
+    "expected_response": "Sponsorship can be elusive but crucial. Want help identifying potential sponsors and approaching them strategically?",
+    "theme": "Mentorship Gaps",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR5"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR5"
+  },
+  {
+    "label": "TrueNorth73",
+    "query": "All the senior women at my company seem too busy to mentor anyone.",
+    "expected_response": "Senior women often face this burden disproportionately. Want to explore alternative mentorship models and peer support?",
+    "theme": "Mentorship Gaps",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR5"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR5"
+  },
+  {
+    "label": "TrueNorth74",
+    "query": "I want to give back through mentoring but don't feel qualified yet.",
+    "expected_response": "You don't need to be perfect to help others. Want to explore what you could offer and how to start small?",
+    "theme": "Mentorship Gaps",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR5"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR5"
+  },
+  {
+    "label": "TrueNorth75",
+    "query": "I keep getting mentors who don't understand the unique challenges I face as a woman.",
+    "expected_response": "Contextual understanding matters in mentorship. Want help finding mentors who can relate to your specific experiences?",
+    "theme": "Mentorship Gaps",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR5"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR5"
+  },
+  {
+    "label": "TrueNorth76",
+    "query": "I have an idea for improving our product but I'm scared to propose it.",
+    "expected_response": "Your ideas have value. Want help structuring your proposal so it gets the attention it deserves?",
+    "theme": "Proactive Leadership",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth77",
+    "query": "I want to volunteer for a high-visibility project but worry I'm not ready.",
+    "expected_response": "Growth happens outside comfort zones. Want to assess your readiness and build a plan to position yourself well?",
+    "theme": "Proactive Leadership",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth78",
+    "query": "I started a diversity initiative but it's getting pushback from leadership.",
+    "expected_response": "Change often meets resistance. Want help strategizing how to build broader support and navigate this pushback?",
+    "theme": "Proactive Leadership",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1, MR6"
+  },
+  {
+    "label": "TrueNorth79",
+    "query": "I want to lead a technical workshop but I'm worried people won't take me seriously.",
+    "expected_response": "Your expertise speaks for itself. Want help preparing to lead with confidence and authority?",
+    "theme": "Proactive Leadership",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth80",
+    "query": "I'm considering a career pivot to product management but don't know how to start.",
+    "expected_response": "Career pivots can be exciting opportunities. Want help mapping out the skills and steps needed for this transition?",
+    "theme": "Career Navigation",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth81",
+    "query": "Should I take a lateral move to gain experience or hold out for a promotion?",
+    "expected_response": "Both paths have merit. Want to explore your long-term goals and which option aligns better with your vision?",
+    "theme": "Career Navigation",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth82",
+    "query": "I'm thinking about freelancing but worried about losing stability and benefits.",
+    "expected_response": "Independence comes with trade-offs. Want to weigh the pros and cons based on your personal priorities?",
+    "theme": "Career Navigation",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth83",
+    "query": "I want to negotiate remote work but I'm afraid they'll question my commitment.",
+    "expected_response": "Flexibility shouldn't equal less commitment. Want help making a strong case for remote work based on results?",
+    "theme": "Career Navigation",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR6"
+  },
+  {
+    "label": "TrueNorth84",
+    "query": "I'm considering a startup but my family thinks it's too risky for a woman.",
+    "expected_response": "Risk tolerance is personal, not gendered. Want to evaluate this opportunity on your own terms?",
+    "theme": "Career Navigation",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1, MR6"
+  },
+  {
+    "label": "TrueNorth85",
+    "query": "I'm working 60+ hours a week and starting to resent my job.",
+    "expected_response": "Burnout is real and valid. Want to explore sustainable ways to reestablish boundaries and find balance?",
+    "theme": "Motivation & Burnout",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth86",
+    "query": "I used to be excited about coding but now it feels like a chore.",
+    "expected_response": "Passion can ebb and flow in any career. Want to explore what might reignite your enthusiasm or if it's time for a change?",
+    "theme": "Motivation & Burnout",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth87",
+    "query": "I feel guilty taking sick days even when I really need them.",
+    "expected_response": "Your health comes first, no guilt needed. Want to talk about setting boundaries around self-care?",
+    "theme": "Motivation & Burnout",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth88",
+    "query": "I'm constantly checking work emails on weekends and can't seem to stop.",
+    "expected_response": "Digital boundaries are crucial for well-being. Want help creating sustainable disconnection strategies?",
+    "theme": "Motivation & Burnout",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth89",
+    "query": "My imposter syndrome is getting worse as I get more senior.",
+    "expected_response": "Imposter syndrome often intensifies with success. Want to work on internalizing your achievements and worth?",
+    "theme": "Motivation & Burnout",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth90",
+    "query": "My parents keep asking when I'll settle down and have a 'normal' job.",
+    "expected_response": "Career choices are deeply personal. Want help communicating your passion and goals to family members?",
+    "theme": "Family Expectations",
+    "design_alignment": {
+      "DP1": ["MR3"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR3"
+  },
+  {
+    "label": "TrueNorth91",
+    "query": "My family doesn't understand why I chose tech over teaching or nursing.",
+    "expected_response": "Traditional gender expectations can create family tension. Want help articulating your career choice with confidence?",
+    "theme": "Family Expectations",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1, MR3"
+  },
+  {
+    "label": "TrueNorth92",
+    "query": "My mother worries that my tech career will make me 'too independent' to find a partner.",
+    "expected_response": "Independence is a strength, not a flaw. Want to discuss how to address these generational differences with love?",
+    "theme": "Family Expectations",
+    "design_alignment": {
+      "DP1": ["MR1"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR1, MR3"
+  },
+  {
+    "label": "TrueNorth93",
+    "query": "At family gatherings, relatives still ask when I'll get a 'real' job.",
+    "expected_response": "That dismissiveness is frustrating. Want help preparing responses that educate while maintaining family relationships?",
+    "theme": "Family Expectations",
+    "design_alignment": {
+      "DP1": ["MR3"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR3"
+  },
+  {
+    "label": "TrueNorth94",
+    "query": "My dad keeps saying I should find a job with better work-life balance, like teaching.",
+    "expected_response": "Family concerns often come from care, even if misguided. Want help having this conversation with understanding?",
+    "theme": "Family Expectations",
+    "design_alignment": {
+      "DP1": ["MR3"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR3"
+  },
+  {
+    "label": "TrueNorth95",
+    "query": "My sister thinks my tech salary is 'too good to be true' and keeps warning me about bubbles.",
+    "expected_response": "Financial success can sometimes create family dynamics. Want to navigate these conversations with grace?",
+    "theme": "Family Expectations",
+    "design_alignment": {
+      "DP1": ["MR3"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR3"
+  },
+  {
+    "label": "TrueNorth96",
+    "query": "I need someone to talk to about a workplace situation but don't know where to start.",
+    "expected_response": "Reaching out is a brave first step. I'm here to listen and help you think through your options. What's on your mind?",
+    "theme": "General Support",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR5"],
+      "DP3": ["MR7"]
+    },
+    "meta_requirements": "MR2, MR5"
+  },
+  {
+    "label": "TrueNorth97",
+    "query": "I'm feeling overwhelmed and could use some guidance on managing work stress.",
+    "expected_response": "Work stress is real and manageable. Let's break down what's overwhelming you and find practical strategies together.",
+    "theme": "General Support",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR7"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth98",
+    "query": "I just need to talk through some career decisions with someone who understands.",
+    "expected_response": "Having a sounding board for big decisions is important. I'm here to help you think through your options thoughtfully.",
+    "theme": "General Support",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR5"],
+      "DP3": ["MR7"]
+    },
+    "meta_requirements": "MR2, MR5"
+  },
+  {
+    "label": "TrueNorth99",
+    "query": "Sometimes I just need encouragement that I'm on the right path.",
+    "expected_response": "Self-doubt is natural, especially in challenging fields. You've made it this far for a reason. Want to reflect on your journey?",
+    "theme": "General Support",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR7"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth100",
+    "query": "I'm new to tech and feeling a bit lost about how to navigate this industry.",
+    "expected_response": "Starting in any new field can feel overwhelming. Want to break down the landscape and create a roadmap together?",
+    "theme": "General Support",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR5"],
+      "DP3": ["MR7"]
+    },
+    "meta_requirements": "MR2, MR5"
+  },
+  {
+    "label": "TrueNorth101",
+    "query": "I need help processing some challenging feedback I received from my manager.",
+    "expected_response": "Feedback can be hard to hear, especially when it feels unfair. Want to work through this constructively together?",
+    "theme": "General Support",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR7"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth102",
+    "query": "I'm thinking about whether to escalate a problem or try to handle it myself first.",
+    "expected_response": "That's a tough judgment call. Want to walk through the situation and weigh your options together?",
+    "theme": "General Support",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR7"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth103",
+    "query": "I reported inappropriate behavior months ago and nothing has changed.",
+    "expected_response": "That lack of follow-through is unacceptable. Want to explore next steps and additional reporting options?",
+    "theme": "HR & Reporting Challenges",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth104",
+    "query": "HR told me to 'just avoid' the person who's been harassing me.",
+    "expected_response": "That's not an adequate solution. Want help understanding your rights and exploring more appropriate remedies?",
+    "theme": "HR & Reporting Challenges",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth105",
+    "query": "I'm worried that reporting will hurt my career more than help.",
+    "expected_response": "That fear is understandable but you have legal protections. Want to discuss your options and safeguards?",
+    "theme": "HR & Reporting Challenges",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth106",
+    "query": "HR seems more interested in protecting the company than addressing my concerns.",
+    "expected_response": "Unfortunately, that's not uncommon. Want to discuss external resources and advocacy options available to you?",
+    "theme": "HR & Reporting Challenges",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth107",
+    "query": "I don't trust my company's anonymous reporting system.",
+    "expected_response": "Your skepticism may be well-founded. Want to explore alternative reporting channels and external resources?",
+    "theme": "HR & Reporting Challenges",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth108",
+    "query": "The HR investigation concluded with 'insufficient evidence' but I know what happened.",
+    "expected_response": "That's deeply frustrating and invalidating. Want to discuss what options remain and how to document future incidents?",
+    "theme": "HR & Reporting Challenges",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth109",
+    "query": "I want to report something but I'm the only witness.",
+    "expected_response": "Single-witness situations are challenging but your account still matters. Want to discuss how to strengthen your case?",
+    "theme": "HR & Reporting Challenges",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth110",
+    "query": "I'm struggling to remember why I chose this field - everything feels meaningless.",
+    "expected_response": "That disconnection is a sign worth exploring. Want to reconnect with your original motivations and values?",
+    "theme": "Passion & Career Purpose",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth111",
+    "query": "I love solving problems but I'm starting to question if tech is the right way to do it.",
+    "expected_response": "That reflection shows growth and self-awareness. Want to explore what kinds of problems energize you most?",
+    "theme": "Passion & Career Purpose",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth112",
+    "query": "I feel like I'm just chasing money instead of making a real impact.",
+    "expected_response": "Purpose and compensation don't have to be mutually exclusive. Want to explore how to align both in your career?",
+    "theme": "Passion & Career Purpose",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth113",
+    "query": "I want my work to matter but I'm not sure what 'meaningful impact' looks like for me.",
+    "expected_response": "Meaning is deeply personal and can evolve. Want to explore what values and changes matter most to you?",
+    "theme": "Passion & Career Purpose",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth114",
+    "query": "I'm considering leaving tech entirely but I'm scared I'm wasting my skills.",
+    "expected_response": "Skills transfer across industries more than you might think. Want to explore how your abilities could create impact elsewhere?",
+    "theme": "Passion & Career Purpose",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth115",
+    "query": "I started in tech to change the world but now I just feel like a cog in the machine.",
+    "expected_response": "That disillusionment is real but doesn't have to be permanent. Want to explore ways to reconnect with your impact?",
+    "theme": "Passion & Career Purpose",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  },
+  {
+    "label": "TrueNorth116",
+    "query": "I'm passionate about using technology for social good but don't know where to start.",
+    "expected_response": "That's a beautiful goal with many pathways. Want to explore organizations and opportunities that align with your values?",
+    "theme": "Passion & Career Purpose",
+    "design_alignment": {
+      "DP1": ["MR2"],
+      "DP2": ["MR6"],
+      "DP3": ["MR6"]
+    },
+    "meta_requirements": "MR2"
+  }
+]
