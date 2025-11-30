@@ -11,12 +11,41 @@ def merge_dicts(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
     return {**a, **b}
 
 
+# --- Citation Data Models ---
+
+
+class CitationSource(BaseModel):
+    """Internal representation of a available source (PDF or Web)."""
+
+    source_id: int  # Immutable ID (1, 2, 3...)
+    type: str  # "pdf" or "web"
+
+    # Display Metadata
+    author: str
+    title: str
+    year: str
+    page: str = ""
+    url: str  # API endpoint (PDF) or Web URL
+    filename: str  # For icon logic
+
+    # Content
+    content_snippet: str  # Fallback content (~200 chars)
+    full_content: str = Field(exclude=True)  # Full text for LLM context (excluded from serialization if needed)
+
+
+class CitedSource(BaseModel):
+    """Output from the LLM Answer Generator."""
+
+    source_id: int  # Matches CitationSource.source_id
+    quote: str  # The exact text extracted by LLM
+
+
 # Define agent state as a Pydantic model
 class ChatState(BaseModel):
     question: str
     original_question: str = None
     generation: str = None
-    
+
     # NOTE: messages and documents are stored redundantly — they also live inside metadata variable
     messages: List[BaseMessage] = Field(default_factory=list)
     documents: List[Any] = Field(default_factory=list)
@@ -24,26 +53,21 @@ class ChatState(BaseModel):
     # Contains all information carried between agents
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
-    max_retries : int = 2
-    current_try : int = 0
+    # NEW: Explicit Citation Registry
+    # Maps source_id (int) -> CitationSource
+    citation_registry: Dict[int, CitationSource] = Field(default_factory=dict)
+
+    # NEW: Structured Output from Answer Generator
+    generated_citations: List[CitedSource] = Field(default_factory=list)
+
+    max_retries: int = 2
+    current_try: int = 0
 
     def merged_data(self, other: "ChatState") -> Dict[str, Any]:
         return merge_dicts(self.data, other.data)
 
     def merged_metadata(self, other: "ChatState") -> Dict[str, Any]:
         return merge_dicts(self.metadata, other.metadata)
-
-
-# an old draft of this class
-# class ChatState(BaseModel):
-#     question: str
-#     metadata: Optional[Dict[str, Any]] = {}
-#     generation: Optional[str] = None
-#     documents: Optional[List[str]] = None
-#     hallucination_checker_attempts: int = 0
-#     answer_verifier_attempts: int = 0
-#     token_count: Optional[int] = None
-#     response_time: Optional[float] = None
 
 
 class HCResult(BaseModel):

@@ -16,6 +16,8 @@ from truenorth.utils.progress import progress
 from truenorth.graph import build_rag_graph, save_graph_as_png
 from truenorth.api.routes import pdf
 from truenorth.utils.database import init_db, log_request, get_request_count, cleanup_old_logs
+from truenorth.utils.citation_manager import CitationManager
+from truenorth.agent.state import ChatState
 
 # Get API base URL from environment, default to production
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.mytruenorth.app")
@@ -89,10 +91,11 @@ app.include_router(pdf.router)
 
 # Allow UI to make API requests
 # Get allowed origins from environment or use defaults
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:8501,http://localhost:3000").split(",")
+# Broaden for testing
+# allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:8501,http://localhost:3000,http://localhost:3001").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origin.strip() for origin in allowed_origins],
+    allow_origins=["*"],  # Allow all for testing
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -162,44 +165,6 @@ async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
         },
     }
 
-    # Helper to safely get metadata
-    def get_meta(doc, key, default=""):
-        if isinstance(doc, dict):
-            return doc.get("metadata", {}).get(key, default)
-        return doc.metadata.get(key, default)
-
-    def get_page_content(doc):
-        if isinstance(doc, dict):
-            return doc.get("page_content", "")
-        return doc.page_content
-
-    import re
-
-    def clean_snippet(text: str) -> str:
-        if not text:
-            return ""
-        # Collapse multiple spaces/newlines into single space for card layout
-        text = re.sub(r"\s+", " ", text)
-        # Remove markdown headers (e.g. ## Header)
-        text = re.sub(r"#+\s*", "", text)
-        # Remove bold/italic markers (* or _)
-        text = re.sub(r"(\*\*|__|\*|_)", "", text)
-        # Remove links [text](url) -> text
-        text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
-
-        # Smart truncation: Try to end at a sentence boundary if possible within limit
-        limit = 280
-        if len(text) > limit:
-            truncated = text[:limit]
-            # Look for last sentence ending
-            last_period = truncated.rfind(".")
-            if last_period > limit * 0.8:  # If sentence end is within last 20% of limit
-                return text[: last_period + 1]
-            # Fallback to word boundary
-            return text[:limit].rsplit(" ", 1)[0] + "..."
-
-        return text.strip()
-
     try:
         # Stream events from the graph
         async for event in agent.astream_events(inputs, version="v2"):
@@ -217,16 +182,6 @@ async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
             # But it's easier to just check for the final state in the loop or return it at end
             pass
 
-        # After streaming is done, we need to get the final state to extract the answer
-        # Currently astream_events doesn't easily give the final accumulated state
-        # So we re-run invoke (cached ideally, but here we just run it)
-        # OR we can capture the outputs from node ends.
-
-        # Optimization: Just run invoke for the final result since we can't easily reconstruct state from astream_events
-        # without complex logic. The user wants visual feedback, so the delay of double execution (or overhead)
-        # might be acceptable, OR better:
-        # Use astream() instead of astream_events() which yields state updates.
-
     except Exception as e:
         logger.error(f"Stream error: {e}")
         yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
@@ -234,79 +189,26 @@ async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
 
     # Getting final result (re-running invoke is safer to get full consistent state)
     # Note: In production, you'd want to capture state from the stream loop to avoid re-execution.
-    final_state = await agent.ainvoke(inputs)
+    final_state_dict = await agent.ainvoke(inputs)
 
-    # Process final response similar to invoke_llm
-    response_text = final_state.get("metadata", {}).get("clean_answer") or final_state.get("generation") or str(final_state)
+    # Cast back to ChatState object for CitationManager
+    final_state = ChatState(**final_state_dict)
 
-    # Extract citations
-    citations = []
-    documents = final_state.get("documents", [])
-    structured_citations = final_state.get("metadata", {}).get("structured_citations", [])
-    structured_map = {c["source_id"]: c["quote"] for c in structured_citations}
+    # Process final response
+    response_text = final_state.generation or str(final_state)
 
-    for doc in documents:
-        citation_num = get_meta(doc, "citation_num")
-        is_used = citation_num and (citation_num in structured_map or f"[{citation_num}]" in response_text)
-
-        if is_used:
-            author = get_meta(doc, "author", "Unknown Author")
-            if author.startswith("{") and author.endswith("}"):
-                author = author[1:-1]
-
-            title = get_meta(doc, "title", "Unknown Title")
-            year = str(get_meta(doc, "year", "")) or "n.d."
-            page = str(get_meta(doc, "page", ""))
-            filename = os.path.basename(get_meta(doc, "file_path", "") or get_meta(doc, "source", ""))
-
-            url_meta = get_meta(doc, "url", "")
-            source_meta = get_meta(doc, "source", "")
-            is_web = False
-
-            if url_meta:
-                is_web = True
-                web_url = url_meta
-            elif source_meta and source_meta.startswith("http"):
-                is_web = True
-                web_url = source_meta
-
-            if is_web:
-                # Extract root domain for author
-                try:
-                    domain = urlparse(web_url).netloc
-                    author = domain.replace("www.", "")
-                except:
-                    author = "Web Source"
-                api_url = web_url
-                filename = "web_source"
-            else:
-                api_url = f"{API_BASE_URL}/api/pdf/{filename}/pages?page={page}"
-
-            if citation_num in structured_map:
-                snippet = structured_map[citation_num]
-            else:
-                content = get_page_content(doc)
-                snippet = content.strip()[:100] + "..." if len(content) > 100 else content.strip()
-
-            snippet = clean_snippet(snippet)
-            citations.append(Citation(id=int(citation_num), author=author, title=title, year=year, page=page, snippet=snippet, url=api_url, filename=filename).dict())
-
-    citations.sort(key=lambda x: x["id"])
+    # Extract citations using CitationManager and get renumbered text
+    # This replaces the entire block of manual metadata extraction
+    citations, renumbered_response_text = CitationManager.resolve_citations(final_state)
 
     # Yield final result
-    result = {"type": "result", "response": response_text, "citations": citations, "conversation_id": "default"}
+    result = {"type": "result", "response": renumbered_response_text, "citations": citations, "conversation_id": "default"}
     yield f"data: {json.dumps(result)}\n\n"
     yield "data: [DONE]\n\n"
 
 
 # Kept for backward compatibility
 async def invoke_llm(question: str) -> Tuple[str, List[Any], List[Citation]]:
-    # ... (existing implementation) ...
-    # We can just return empty list/tuple or duplicate logic if needed,
-    # but best to rely on the stream_workflow logic mainly.
-    # For now, let's keep the original implementation for /query endpoint
-    # to avoid breaking anything if we fallback.
-    # Copying previous implementation...
     logger.info("Invoking chatbot (legacy invoke)...")
     progress.start()
     try:
@@ -330,63 +232,14 @@ async def invoke_llm(question: str) -> Tuple[str, List[Any], List[Citation]]:
             }
         )
 
-        response = final_state.get("metadata", {}).get("clean_answer") or final_state.get("generation") or str(final_state)
+        response = final_state.generation
 
-        # Re-use citation extraction logic
-        # ... (simplified here, real implementation should ideally share code)
-        # For brevity in this file update, assuming the streaming endpoint is the main goal.
+        # Use CitationManager for legacy endpoint too
+        raw_citations, renumbered_response = CitationManager.resolve_citations(final_state)
+        # Convert dicts back to Pydantic models for legacy return signature
+        citations = [Citation(**c) for c in raw_citations]
 
-        # Extract citations (minimal version for legacy support)
-        citations = []
-        documents = final_state.get("documents", [])
-        structured_citations = final_state.get("metadata", {}).get("structured_citations", [])
-        structured_map = {c["source_id"]: c["quote"] for c in structured_citations}
-
-        # Helper to safely get metadata
-        def get_meta(doc, key, default=""):
-            if isinstance(doc, dict):
-                return doc.get("metadata", {}).get(key, default)
-            return doc.metadata.get(key, default)
-
-        def get_page_content(doc):
-            if isinstance(doc, dict):
-                return doc.get("page_content", "")
-            return doc.page_content
-
-        import re
-
-        def clean_snippet(text):
-            return text[:100]  # Simplified
-
-        for doc in documents:
-            citation_num = get_meta(doc, "citation_num")
-            is_used = citation_num and (citation_num in structured_map or f"[{citation_num}]" in response)
-            if is_used:
-                author = get_meta(doc, "author", "Unknown Author")
-                if author.startswith("{") and author.endswith("}"):
-                    author = author[1:-1]
-                title = get_meta(doc, "title", "Unknown Title")
-                year = str(get_meta(doc, "year", "")) or "n.d."
-                page = str(get_meta(doc, "page", ""))
-                filename = os.path.basename(get_meta(doc, "file_path", "") or get_meta(doc, "source", ""))
-                api_url = f"{API_BASE_URL}/api/pdf/{filename}/pages?page={page}"
-
-                url_meta = get_meta(doc, "url", "")
-                if url_meta:
-                    # Extract root domain for author
-                    try:
-                        domain = urlparse(url_meta).netloc
-                        author = domain.replace("www.", "")
-                    except:
-                        author = "Web Source"
-                    api_url = url_meta
-                    filename = "web_source"
-
-                snippet = structured_map.get(citation_num, "") or get_page_content(doc)[:100]
-                citations.append(Citation(id=int(citation_num), author=author, title=title, year=year, page=page, snippet=snippet, url=api_url, filename=filename))
-
-        citations.sort(key=lambda x: x.id)
-        return response, final_state, citations
+        return renumbered_response, final_state, citations
 
     finally:
         progress.stop()
@@ -402,13 +255,19 @@ async def get_chat_response(input_data: QueryInput, request: Request):
 
 
 @app.post("/api/chat/stream")
-async def stream_chat_response(input_data: QueryInput, request: Request):
+async def stream_chat_response(request: Request):
     """
     Streaming endpoint for chat responses.
     Returns SSE with status updates and final result.
     """
     # Enforce rate limit
     check_rate_limit(request)
+
+    try:
+        data = await request.json()
+        input_data = QueryInput(**data)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
 
     return StreamingResponse(stream_workflow(input_data.question), media_type="text/event-stream")
 

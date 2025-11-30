@@ -7,6 +7,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from .state import ChatState
 from truenorth.utils.logging import get_caller_logger
 from truenorth.utils.cleaner import clean_documents
+from truenorth.utils.citation_manager import CitationManager
 
 from dotenv import load_dotenv
 
@@ -59,11 +60,17 @@ def search_web(state: ChatState) -> ChatState:
 
     documents = WorkingDocs
 
+    # Append to existing documents
     state.documents.extend(documents)
+    
+    # NEW: Process with CitationManager
+    # This will assign IDs to the new web documents, continuing from any existing PDF IDs
+    state = CitationManager.process_documents(state)
 
     for i, doc in enumerate(documents[:max_preview]):
-        # print(type(doc))
-        logger.info(f"{Fore.MAGENTA}🔹 Result {i+1}{Style.RESET_ALL}\n" f"   {Fore.GREEN}Title:{Style.RESET_ALL} {doc.metadata.get('title', 'N/A')}\n" f"   {Fore.BLUE}URL:{Style.RESET_ALL} {doc.metadata.get('url', 'N/A')}\n" f"   {Fore.YELLOW}Excerpt:{Style.RESET_ALL} {doc.page_content[:200].strip()}...\n")
+        # Get the assigned source ID if available (it should be now)
+        source_id = doc.metadata.get("source_id", "N/A")
+        logger.info(f"{Fore.MAGENTA}🔹 Result {i+1} [ID: {source_id}]{Style.RESET_ALL}\n" f"   {Fore.GREEN}Title:{Style.RESET_ALL} {doc.metadata.get('title', 'N/A')}\n" f"   {Fore.BLUE}URL:{Style.RESET_ALL} {doc.metadata.get('url', 'N/A')}\n" f"   {Fore.YELLOW}Excerpt:{Style.RESET_ALL} {doc.page_content[:200].strip()}...\n")
 
     if len(documents) > max_preview:
         logger.info(f"{Fore.CYAN}...and {len(documents) - max_preview} more results not shown.{Style.RESET_ALL}")

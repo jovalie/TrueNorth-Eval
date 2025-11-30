@@ -3,6 +3,7 @@ from langchain_core.prompts import PromptTemplate
 from .state import ChatState
 from truenorth.utils.logging import get_caller_logger
 from truenorth.utils.llm import call_llm
+from truenorth.utils.citation_manager import CitationManager
 from pydantic import BaseModel, StrictBool
 
 logger = get_caller_logger()
@@ -83,30 +84,16 @@ async def check_relevance(state: ChatState) -> ChatState:
 
     logger.info(f"Filtered out {filtered_out_pct:.1%}: {checker_result.upper()}")
 
-    # Assign sequential citation numbers to filtered documents
-    citation_map = {}
-    for idx, doc in enumerate(filtered_documents, start=1):
-        # Add citation number to document metadata
-        doc.metadata["citation_num"] = idx
-        
-        # Build citation map for reference
-        author = doc.metadata.get("author", "Unknown Author")
-        title = doc.metadata.get("title", "Unknown Title")
-        year = doc.metadata.get("year", "n.d.")
-        page = doc.metadata.get("page", "")
-        
-        citation_key = f"{author} ({year}). {title}"
-        if page:
-            citation_key += f", p. {page}"
-        
-        citation_map[idx] = citation_key
-    
-    logger.info(f"--- Assigned {len(citation_map)} citation numbers ---")
-    for num, citation in citation_map.items():
-        logger.info(f"[{num}] {citation[:80]}...")
-
-    # Update the state appropriately
+    # Update state with filtered documents
     state.documents = filtered_documents
     state.metadata["relevance_score"] = checker_result
-    state.metadata["citation_map"] = citation_map
+    
+    # NEW: Use CitationManager to process documents and assign IDs
+    # This replaces the manual citation_map construction
+    state = CitationManager.process_documents(state)
+    
+    logger.info(f"--- Assigned {len(state.citation_registry)} citation numbers ---")
+    for src in state.citation_registry.values():
+        logger.info(f"[{src.source_id}] {src.author} ({src.year}) - {src.title}")
+
     return state
