@@ -219,7 +219,7 @@ async def invoke_llm(question: str) -> Tuple[str, List[Any], List[Citation]]:
         workflow = build_rag_graph(selected_analysts)
         agent = workflow.compile()
 
-        final_state = await agent.ainvoke(
+        final_state_dict = await agent.ainvoke(
             {
                 "question": question,
                 "messages": [HumanMessage(content=question)],
@@ -231,6 +231,9 @@ async def invoke_llm(question: str) -> Tuple[str, List[Any], List[Citation]]:
                 },
             }
         )
+
+        # Cast back to ChatState object for CitationManager
+        final_state = ChatState(**final_state_dict)
 
         response = final_state.generation
 
