@@ -165,6 +165,8 @@ async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
         },
     }
 
+    final_state_dict = None
+
     try:
         # Stream events from the graph
         async for event in agent.astream_events(inputs, version="v2"):
@@ -177,19 +179,19 @@ async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
                     status_msg = AGENT_STATUS_MESSAGES[name]
                     yield f"data: {json.dumps({'type': 'status', 'message': status_msg})}\n\n"
 
-            # Handle final output
-            # The final output comes from on_chain_end of the compiled graph (LangGraph)
-            # But it's easier to just check for the final state in the loop or return it at end
-            pass
+            # Capture final output from the root chain end
+            elif kind == "on_chain_end" and event["name"] == "LangGraph":
+                final_state_dict = event["data"].get("output")
 
     except Exception as e:
         logger.error(f"Stream error: {e}")
         yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
         return
 
-    # Getting final result (re-running invoke is safer to get full consistent state)
-    # Note: In production, you'd want to capture state from the stream loop to avoid re-execution.
-    final_state_dict = await agent.ainvoke(inputs)
+    if not final_state_dict:
+        # Fallback if root event wasn't captured (should not happen in successful run)
+        logger.warning("Could not capture final state from stream events. Re-invoking (fallback).")
+        final_state_dict = await agent.ainvoke(inputs)
 
     # Cast back to ChatState object for CitationManager
     final_state = ChatState(**final_state_dict)
