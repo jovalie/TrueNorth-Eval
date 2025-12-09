@@ -88,6 +88,7 @@ async def startup_event():
 
 # Register routers
 app.include_router(pdf.router)
+app.include_router(pdf.router, prefix="/api") # Allow /api/pdf/... access as well
 
 # Allow UI to make API requests
 # Get allowed origins from environment or use defaults

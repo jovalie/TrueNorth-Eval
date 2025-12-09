@@ -1,7 +1,7 @@
 import re
 import os
 from typing import List, Dict, Any, Optional, Tuple
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 
 from langchain_core.documents import Document
 from pydantic import BaseModel
@@ -13,6 +13,8 @@ logger = get_caller_logger()
 
 # Get API base URL from environment, default to production
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.mytruenorth.app")
+# Get Frontend URL for document viewing links
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
 
 class Citation(BaseModel):
@@ -133,8 +135,12 @@ class CitationManager:
             filename = os.path.basename(file_path) if file_path else "unknown.pdf"
 
             # Ensure page param is present
-            page_param = f"?page={page}" if page else "?page=1"
-            final_url = f"{API_BASE_URL}/api/pdf/{filename}/pages{page_param}"
+            page_val = page if page else "1"
+            
+            # Use frontend document viewer URL
+            # Format: {FRONTEND_URL}/document?file={filename}&page={page}
+            encoded_filename = quote(filename)
+            final_url = f"{FRONTEND_URL}/document?file={encoded_filename}&page={page_val}"
 
             doc_type = "pdf"
 

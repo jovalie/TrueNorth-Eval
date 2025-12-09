@@ -3,10 +3,13 @@ PDF page viewer API endpoint.
 Serves PDF pages as images with page range support.
 """
 import os
+import logging
 from pathlib import Path
 from typing import Optional
 from fastapi import HTTPException
 import fitz  # PyMuPDF
+
+logger = logging.getLogger(__name__)
 
 # Base directory for PDFs
 BOOKS_DIR = Path(__file__).parent.parent.parent / "books_pdf"
@@ -33,6 +36,14 @@ def get_pdf_path(filename: str) -> Path:
     
     # Verify file exists and is within BOOKS_DIR
     if not pdf_path.exists():
+        logger.error(f"PDF not found: {pdf_path.absolute()}")
+        # Log directory contents for debugging
+        try:
+            files = [f.name for f in BOOKS_DIR.iterdir()]
+            logger.info(f"Available PDFs in {BOOKS_DIR}: {files}")
+        except Exception as e:
+            logger.error(f"Could not list directory: {e}")
+            
         raise HTTPException(status_code=404, detail="PDF not found")
     
     if not pdf_path.is_relative_to(BOOKS_DIR):
