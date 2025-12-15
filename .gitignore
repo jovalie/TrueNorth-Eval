@@ -7,7 +7,7 @@ vector_store*
 .DS_Store
 .logs
 *.log
-truenorth-*.json
+truenorth*.json
 *.db
 rate_limits.db
 src/rate_limits.db
