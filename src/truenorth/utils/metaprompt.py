@@ -10,4 +10,4 @@ goals_as_str += "\n If relevant, PERMA+4 are pillars of wellbeing: Positive Emot
 
 vectorstore_content_summary = "workplace wellbeing, communcation strategies rooted in conflict resolution and diplomacy, positive psychology, leadership skills, coping mechanisms"
 
-system_relevant_scope = "anything related to optimizing comfort in lived environment, maintaining positive trajectory towards maximizing STEM career"
+system_relevant_scope = "technical or engineering knowledge, software development, management and leadership, optimizing comfort in lived environment, maintaining positive trajectory towards maximizing STEM career"
