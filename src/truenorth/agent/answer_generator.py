@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import List, Optional
 from langchain_core.prompts import PromptTemplate
 from langchain_core.documents import Document
+from langchain_core.messages import AIMessage
 from pydantic import BaseModel, Field
 from truenorth.utils.llm import call_llm
 from truenorth.agent.state import show_agent_reasoning, CitationSource, CitedSource
@@ -85,27 +86,16 @@ def answer_generator(state):
     source_context = CitationManager.get_context_string(state)
 
     # Format the prompt
-    prompt = answer_generator_prompt_template.format(
-        current_datetime=current_datetime, 
-        question=question, 
-        goals_as_str=goals_as_str, 
-        source_context=source_context
-    )
+    prompt = answer_generator_prompt_template.format(current_datetime=current_datetime, question=question, goals_as_str=goals_as_str, source_context=source_context)
 
     logger.info(f"Answer generator prompt length: {len(prompt)}")
 
     # Force use of Gemini 2.5 Pro for answer generation
     # While preserving other state metadata
-    answer_model_name = "gemini-2.5-pro"
+    answer_model_name = "gemini-2.5-flash"
 
     # Call LLM with structured output using Gemini 2.5
-    response_obj = call_llm(
-        prompt=prompt, 
-        model_name=answer_model_name, 
-        model_provider="Gemini", 
-        pydantic_model=AnswerResponse, 
-        agent_name="answer_generator_agent"
-    )
+    response_obj = call_llm(prompt=prompt, model_name=answer_model_name, model_provider="Gemini", pydantic_model=AnswerResponse, agent_name="answer_generator_agent")
 
     show_agent_reasoning(response_obj, f"Answer Generator Response | " + answer_model_name)
 
@@ -125,7 +115,6 @@ def answer_generator(state):
     state.generated_citations = structured_citations
 
     # Add message to history
-    from langchain_core.messages import AIMessage
     state.messages.append(AIMessage(content=generation_text))
 
     logger.info(f"Response: {state.generation[:200]}...")
