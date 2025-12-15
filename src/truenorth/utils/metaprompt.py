@@ -6,6 +6,7 @@ DP2 = "develop a trustworthy and personalized learning environment through the c
 DP3 = "facilitate empowering and streamlined interactions with the conversational agent through simplified dialogues to bolster comprehension and foster independence for users in professional and academic STEM environments."
 
 goals_as_str = "\n".join([f"{i}. {goal}" for i, goal in enumerate([DP1, DP2, DP3])])
+goals_as_str += "\n If relevant, PERMA+4 are pillars of wellbeing: Positive Emotions, Engagement, Relationships, Meaning, Accomplishment) by adding four more elements: Physical Health, Positive Mindset, Environment, and Economic Security, creating a comprehensive framework for well-being."
 
 vectorstore_content_summary = "workplace wellbeing, communcation strategies rooted in conflict resolution and diplomacy, positive psychology, leadership skills, coping mechanisms"
 
