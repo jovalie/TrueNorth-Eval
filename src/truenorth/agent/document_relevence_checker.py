@@ -67,7 +67,7 @@ async def check_relevance(state: ChatState) -> ChatState:
     try:
         result = await call_llm(
             prompt=[prompt_text],
-            model_name='gemini-2.5-flash'',
+            model_name="gemini-2.5-flash",
             model_provider=model_provider,
             pydantic_model=BatchRelevanceGrade,
             agent_name="relevance_grader_batch",
