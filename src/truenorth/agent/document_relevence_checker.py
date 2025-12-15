@@ -1,5 +1,5 @@
 import asyncio
-from typing import List
+from typing import List, Optional
 from langchain_core.prompts import PromptTemplate
 from .state import ChatState
 from truenorth.utils.logging import get_caller_logger
@@ -10,10 +10,17 @@ from pydantic import BaseModel, Field
 logger = get_caller_logger()
 
 
-class BatchRelevanceGrade(BaseModel):
-    """List of boolean grades for multiple documents."""
+class DocumentGrade(BaseModel):
+    """Evaluation of a single document."""
 
-    grades: List[bool] = Field(description="List of true/false grades corresponding to the order of documents provided.")
+    relevant: bool = Field(description="True if the document contains information relevant to the user question.")
+    quote: Optional[str] = Field(description="A verbatim quote from the document that answers the question. Required if relevant.")
+
+
+class BatchRelevanceGrade(BaseModel):
+    """List of grades for multiple documents."""
+
+    grades: List[DocumentGrade] = Field(description="List of grades corresponding to the order of documents provided.")
 
 
 # Batch document prompt
@@ -33,16 +40,17 @@ You are a relevance grader evaluating a list of retrieved documents to see if th
 
 **Instructions**:
 - Evaluate each document in order.
-- Return a JSON object with a single key `grades` which is a list of booleans.
-- Use `true` if the document contains related or helpful information.
-- Use `false` if completely unrelated.
+- Return a JSON object with a single key `grades` which is a list of objects.
+- Each object must have:
+  - `relevant`: boolean (true/false)
+  - `quote`: string (The exact sentence or paragraph from the text that is relevant. If not relevant, empty string.)
 - The list order MUST match the document order (Doc 1 -> index 0).
 """
 )
 
 
 async def check_relevance(state: ChatState) -> ChatState:
-    logger.info("---CHECK DOCUMENT RELEVANCE (BATCH MODE)---")
+    logger.info("---CHECK DOCUMENT RELEVANCE (BATCH MODE WITH QUOTES)---")
 
     if not state.documents:
         logger.info("---NO DOCUMENTS AVAILABLE, WEB SEARCH TRIGGERED---")
@@ -57,7 +65,7 @@ async def check_relevance(state: ChatState) -> ChatState:
     # Format documents for the prompt
     formatted_docs = []
     for i, doc in enumerate(documents, 1):
-        content = doc.page_content.replace("\n", " ").strip()[:500]  # Truncate for efficiency
+        content = doc.page_content.replace("\n", " ").strip()[:800]  # Increased context for better quotes
         formatted_docs.append(f"[Doc {i}] {content}...")
 
     formatted_docs_str = "\n\n".join(formatted_docs)
@@ -67,33 +75,43 @@ async def check_relevance(state: ChatState) -> ChatState:
     try:
         result = await call_llm(
             prompt=[prompt_text],
-            model_name="gemini-2.5-flash",
+            model_name="gemini-2.0-flash",  # Use higher capacity model for extraction
             model_provider=model_provider,
             pydantic_model=BatchRelevanceGrade,
             agent_name="relevance_grader_batch",
             max_retries=2,
             verbose=True,
         )
-        grades = result.grades
+        grades_list = result.grades
     except Exception as e:
         logger.error(f"Batch grading failed: {e}. Fallback to accepting all documents.")
         # Fallback: keep all documents if grading fails
-        grades = [True] * len(documents)
+        grades_list = [DocumentGrade(relevant=True, quote="") for _ in documents]
 
-    # Ensure we have enough grades (pad with True if short, slice if long)
-    if len(grades) < len(documents):
-        grades.extend([True] * (len(documents) - len(grades)))
-    grades = grades[: len(documents)]
+    # Ensure we have enough grades
+    if len(grades_list) < len(documents):
+        grades_list.extend([DocumentGrade(relevant=True, quote="") for _ in range(len(documents) - len(grades_list))])
+    grades_list = grades_list[: len(documents)]
 
     # Pretty logging
     logger.info("--- Document Grading Results ---")
     filtered_documents = []
-    for idx, (doc, grade) in enumerate(zip(documents, grades), start=1):
-        mark = "✔️" if grade else "❌"
-        snippet = doc.page_content.strip().replace("\n", " ")[:100]
-        logger.info(f'{mark} Document {idx}: {grade} - "{snippet}..."')
-        if grade:
+
+    for idx, (doc, grade_obj) in enumerate(zip(documents, grades_list), start=1):
+        is_relevant = grade_obj.relevant
+        mark = "✔️" if is_relevant else "❌"
+
+        if is_relevant:
+            # Store the extracted quote in metadata for CitationManager
+            if grade_obj.quote:
+                doc.metadata["extracted_quote"] = grade_obj.quote
+                logger.info(f'{mark} Doc {idx}: RELEVANT - Quote: "{grade_obj.quote[:50]}..."')
+            else:
+                logger.info(f"{mark} Doc {idx}: RELEVANT - No quote extracted")
+
             filtered_documents.append(doc)
+        else:
+            logger.info(f"{mark} Doc {idx}: NOT RELEVANT")
 
     # Determine checker result
     total_docs = len(documents)

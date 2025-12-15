@@ -136,7 +136,7 @@ class CitationManager:
 
             # Ensure page param is present
             page_val = page if page else "1"
-            
+
             # Use frontend document viewer URL
             # Format: {FRONTEND_URL}/document?file={filename}&page={page}
             encoded_filename = quote(filename)
@@ -145,13 +145,20 @@ class CitationManager:
             doc_type = "pdf"
 
         # 4. Content Snippet (Fallback)
-        # Create a clean snippet from the first ~200 chars
-        clean_content = CitationManager._clean_snippet(page_content)
-        snippet = clean_content[:200]
-        if len(clean_content) > 200:
-            snippet += "..."
+        # Check if we have a pre-extracted quote from relevance checker
+        extracted_quote = get_meta("extracted_quote", "")
 
-        return CitationSource(source_id=0, type=doc_type, author=author, title=title, year=year, page=page, url=final_url, filename=filename, content_snippet=snippet, full_content=page_content)  # Placeholder, assigned later
+        # Create a clean snippet from the first ~200 chars if no quote
+        clean_content = CitationManager._clean_snippet(page_content)
+
+        if extracted_quote:
+            snippet = CitationManager._clean_snippet(extracted_quote)
+        else:
+            snippet = clean_content[:200]
+            if len(clean_content) > 200:
+                snippet += "..."
+
+        return CitationSource(source_id=0, type=doc_type, author=author, title=title, year=year, page=page, url=final_url, filename=filename, content_snippet=snippet, full_content=page_content, quote=extracted_quote)  # Store full extracted quote  # Placeholder, assigned later
 
     @staticmethod
     def process_documents(state: ChatState) -> ChatState:

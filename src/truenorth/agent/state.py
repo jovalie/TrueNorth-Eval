@@ -27,6 +27,7 @@ class CitationSource(BaseModel):
     page: str = ""
     url: str  # API endpoint (PDF) or Web URL
     filename: str  # For icon logic
+    quote: str  # The exact text extracted by LLM
 
     # Content
     content_snippet: str  # Fallback content (~200 chars)
@@ -34,10 +35,10 @@ class CitationSource(BaseModel):
 
 
 class CitedSource(BaseModel):
-    """Output from the LLM Answer Generator."""
+    """Represents a citation used in the generated answer."""
 
-    source_id: int  # Matches CitationSource.source_id
-    quote: str  # The exact text extracted by LLM
+    source_id: int
+    quote: str = Field(description="The exact quote from the source that supports the claim.")
 
 
 # Define agent state as a Pydantic model

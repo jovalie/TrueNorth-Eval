@@ -7,7 +7,7 @@ from langchain_core.documents import Document
 from langchain_core.messages import AIMessage
 from pydantic import BaseModel, Field
 from truenorth.utils.llm import call_llm
-from truenorth.agent.state import show_agent_reasoning, CitationSource, CitedSource
+from truenorth.agent.state import show_agent_reasoning, CitedSource
 from truenorth.utils.logging import get_caller_logger
 from truenorth.utils.metaprompt import goals_as_str
 from truenorth.utils.citation_manager import CitationManager
@@ -17,7 +17,8 @@ logger = get_caller_logger()
 
 class AnswerResponse(BaseModel):
     answer: str = Field(description="The natural language answer to the user's question, including [ID] citations.")
-    citations: Optional[List[CitedSource]] = Field(default_factory=list, description="List of sources cited in the answer with the relevant quotes.")
+    # We no longer need the LLM to extract citations/quotes, we infer them from [ID] tags
+    citations: Optional[List[CitedSource]] = Field(default_factory=list, description="Deprecated. Leave empty.")
 
 
 # Define the structured prompt template for answer generation
@@ -54,9 +55,7 @@ The available sources above provide the necessary background knowledge.
 4. Be **comprehensive**, **accurate**, and **focused**. Do not give short, generic answers.
 5. Provide **concrete, actionable advice** that an individual can use to improve their situation, not an organizational solution.
 6. Only answer questions relevant to STEM, workplace support, or academic guidance.
-7. **CRITICAL**: You must extract the exact quote from the source text that supports each citation you use. This will be used to display "inspirational" citation cards.
-8. Return your response in the specified structured format, including the answer text and a list of citations with their quotes.
-9. Keep citations in the .citations list, do not include them in the answer text.
+7. Return your response in the specified structured format (answer text only).
 
 ---
 **Important**:
@@ -102,22 +101,22 @@ def answer_generator(state):
     # Extract components
     if isinstance(response_obj, AnswerResponse):
         generation_text = response_obj.answer
-        structured_citations = response_obj.citations or []
     else:
         # Fallback if structured output failed
         generation_text = str(response_obj.content) if hasattr(response_obj, "content") else str(response_obj)
-        structured_citations = []
 
     # Store the clean answer
     state.generation = generation_text
 
-    # Store the structured citations (ID + Quote)
-    state.generated_citations = structured_citations
+    # Populate generated_citations based on used IDs in the text
+    # The actual resolution happens in CitationManager.resolve_citations,
+    # but we can populate state.generated_citations for completeness if needed elsewhere.
+    # However, CitationManager logic now relies on the registry quotes, so we don't strictly need structured_citations from LLM.
+    state.generated_citations = []
 
     # Add message to history
     state.messages.append(AIMessage(content=generation_text))
 
     logger.info(f"Response: {state.generation[:200]}...")
-    logger.info(f"Generated {len(structured_citations)} citations.")
 
     return state
