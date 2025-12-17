@@ -148,8 +148,8 @@ async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
     """
     logger.info(f"Starting streaming workflow for: {question}")
 
-    model_name = "gemini-2.0-flash"
-    model_provider = "Gemini"
+    model_name = os.getenv("MODEL_NAME_LITE", "gpt-5-nano")
+    model_provider = os.getenv("MODEL_PROVIDER", "OpenAI")
     selected_analysts = []
 
     workflow = build_rag_graph(selected_analysts)
@@ -215,8 +215,8 @@ async def invoke_llm(question: str) -> Tuple[str, List[Any], List[Citation]]:
     logger.info("Invoking chatbot (legacy invoke)...")
     progress.start()
     try:
-        model_name = "gemini-2.0-flash"
-        model_provider = "Gemini"
+        model_name = os.getenv("MODEL_NAME_LITE", "gpt-5-nano")
+        model_provider = os.getenv("MODEL_PROVIDER", "OpenAI")
         selected_analysts = []
 
         workflow = build_rag_graph(selected_analysts)

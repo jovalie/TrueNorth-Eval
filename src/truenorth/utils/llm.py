@@ -75,6 +75,8 @@ AVAILABLE_MODELS = [
     LLMModel(display_name="[openai] gpt-4o", model_name="gpt-4o", provider=ModelProvider.OPENAI),
     LLMModel(display_name="[openai] o1", model_name="o1", provider=ModelProvider.OPENAI),
     LLMModel(display_name="[openai] o3-mini", model_name="o3-mini", provider=ModelProvider.OPENAI),
+    LLMModel(display_name="[openai] gpt-5", model_name="gpt-5", provider=ModelProvider.OPENAI),
+    LLMModel(display_name="[openai] gpt-5-nano", model_name="gpt-5-nano", provider=ModelProvider.OPENAI),
 ]
 
 OLLAMA_MODELS = [
@@ -191,7 +193,9 @@ def call_llm(prompt: Any, model_name: str, model_provider: str, pydantic_model: 
     logger.info(f"LLM provider: {model_provider} | Model: {model_name}")
 
     if pydantic_model:
-        if model_info:
+        # If model info is known, check if we should use structured output
+        # If unknown, assume we can try if provider supports it (or just rely on prompt instructions)
+        if model_info or model_provider in ["OpenAI", "Anthropic", "Gemini"]:
             logger.info("Configuring structured output...")
             llm = llm.with_structured_output(pydantic_model)
 
@@ -242,7 +246,7 @@ def call_llm(prompt: Any, model_name: str, model_provider: str, pydantic_model: 
 
                 # Gemini-Specific Text Fallback (For "AnswerResponse" type models)
                 # When Gemini ignores JSON mode and returns chatty text with citations
-                if model_provider == "Gemini" or model_info.is_gemini():
+                if model_provider == "Gemini" or (model_info and model_info.is_gemini()):
                     logger.warning("[Gemini] JSON extraction failed. Attempting text-based fallback.")
                     try:
                         fields = list(pydantic_model.model_fields.keys())

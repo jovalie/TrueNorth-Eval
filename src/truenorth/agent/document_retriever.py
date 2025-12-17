@@ -135,7 +135,8 @@ def retrieve_documents(state: ChatState) -> ChatState:
     logger.info("\n---QUERY TRANSLATION AND RAG-FUSION---")
 
     # Get embedding model
-    embedding_model = get_embedding_model(model_name=state.metadata["model_name"], model_provider=state.metadata["model_provider"])
+    # Force Gemini for embeddings as requested
+    embedding_model = get_embedding_model(model_name="gemini-2.0-flash", model_provider="Gemini")
 
     # Load FAISS Vector Store that contains book data
     try:
