@@ -105,14 +105,14 @@ def answer_generator(state, user_message_text: str  ):
 
     # Force use of Gemini 2.5 Pro for answer generation
     # While preserving other state metadata
-    answer_model_name = "gemini-2.5-flash"
+    answer_model_name = os.getenv("MODEL_NAME_THINK", "gpt-5")
 
     logger.info(
     "[answer_generator] PROMPT SENT TO LLM:\n%s",
     prompt
 )
     # Call LLM with structured output using Gemini 2.5
-    response_obj = call_llm(prompt=prompt, model_name=answer_model_name, model_provider="Gemini", pydantic_model=AnswerResponse, agent_name="answer_generator_agent")
+    response_obj = call_llm(prompt=prompt, model_name=answer_model_name, model_provider=os.getenv("MODEL_PROVIDER", "OpenAI"), pydantic_model=AnswerResponse, agent_name="answer_generator_agent")
 
     show_agent_reasoning(response_obj, f"Answer Generator Response | " + answer_model_name)
 

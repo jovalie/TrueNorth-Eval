@@ -1,4 +1,5 @@
 import asyncio
+import os
 from typing import List, Optional
 from langchain_core.prompts import PromptTemplate
 from .state import ChatState
@@ -75,8 +76,8 @@ async def check_relevance(state: ChatState) -> ChatState:
     try:
         result = await call_llm(
             prompt=[prompt_text],
-            model_name="gemini-2.0-flash",  # Use higher capacity model for extraction
-            model_provider=model_provider,
+            model_name=os.getenv("MODEL_NAME_LITE", "gpt-5-nano"),  # Use higher capacity model for extraction
+            model_provider=os.getenv("MODEL_PROVIDER", "OpenAI"),
             pydantic_model=BatchRelevanceGrade,
             agent_name="relevance_grader_batch",
             max_retries=2,
