@@ -3,8 +3,8 @@ import logging
 from langchain_core.messages.base import BaseMessage
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 import operator
-
 
 # Merge utility (you can use it manually during runtime)
 def merge_dicts(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
@@ -43,33 +43,80 @@ class CitedSource(BaseModel):
 
 # Define agent state as a Pydantic model
 class ChatState(BaseModel):
-    question: str
-    original_question: str = None
-    generation: str = None
+    snowflake: str
 
-    # NOTE: messages and documents are stored redundantly — they also live inside metadata variable
-    messages: List[BaseMessage] = Field(default_factory=list)
+    question: str = ""
+    original_question: Optional[str] = None
+    generation: Optional[str] = None
+
+    messages: list = Field(default_factory=list)
+    current_user_message: str | None = None
     documents: List[Any] = Field(default_factory=list)
-
-    # Contains all information carried between agents
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
-    # NEW: Explicit Citation Registry
-    # Maps source_id (int) -> CitationSource
     citation_registry: Dict[int, CitationSource] = Field(default_factory=dict)
-
-    # NEW: Structured Output from Answer Generator
     generated_citations: List[CitedSource] = Field(default_factory=list)
 
     max_retries: int = 2
     current_try: int = 0
 
-    def merged_data(self, other: "ChatState") -> Dict[str, Any]:
-        return merge_dicts(self.data, other.data)
+    def add_user_message(self, content: str):
+        self.messages.append(HumanMessage(content=content))
 
-    def merged_metadata(self, other: "ChatState") -> Dict[str, Any]:
-        return merge_dicts(self.metadata, other.metadata)
+    def add_agent_message(self, content: str):
+        self.messages.append(AIMessage(content=content))
 
+    def clear_conversation(self):
+        self.messages.clear()
+    #discord snowflake
+CHAT_STATES: Dict[str, ChatState] = {}
+def get_state(user_snowflake: str) -> ChatState:
+    if user_snowflake not in CHAT_STATES:
+        CHAT_STATES[user_snowflake] = ChatState(
+            snowflake=user_snowflake
+        )
+    return CHAT_STATES[user_snowflake]
+def get_chat_history_text(state: ChatState) -> str:
+    messages = []
+    for msg in state.messages:
+        role = "User" if isinstance(msg, HumanMessage) else "Assistant"
+        messages.append(f"{role}: {msg.content}")
+    return "\n".join(messages)
+
+def summarize_history_if_long(state: ChatState, model_name: str, model_provider: str,call_llm_fn):
+   #summarize if greater than 6 messages
+    if len(state.messages) <= 6:
+        return state 
+    # Prepare history text for summarization
+    history_text = "\n".join(
+        [f"User: {m.content}" if isinstance(m, HumanMessage) else f"Agent: {m.content}"
+         for m in state.messages]
+    )
+    # Summarization prompt
+    prompt = [
+        SystemMessage("You are a helpful assistant. Summarize the conversation below "
+                      "into a concise summary that retains all essential points."),
+        HumanMessage(content=history_text)
+    ]
+
+    # Call the same LLM to summarize
+    summary_response = call_llm_fn(
+        prompt=prompt,
+        model_name=model_name,
+        model_provider=model_provider,
+        pydantic_model=None,
+        agent_name="history_summarizer"
+    )
+
+    # Replace old messages with the summary + last 6 messages for continuity
+    summary_content = str(summary_response.content)
+    last_messages = state.messages[-6:]
+    state.messages = [AIMessage(content=f"[Summary of previous conversation]: {summary_content}")] + last_messages
+
+    return state
+
+def get_conversation(state: ChatState) -> List[BaseMessage]:
+    return state.messages
 
 class HCResult(BaseModel):
     binary_score: str
@@ -80,7 +127,8 @@ class AVResult(BaseModel):
     relevance_score: str
     explanation: Optional[str] = None
 
-
+def build_messages_for_llm(state: ChatState, current_question: str):
+    return state.messages + [HumanMessage(content=current_question)]
 def show_agent_reasoning(output, agent_name):
     print(f"\n{'=' * 10} {agent_name.center(28)} {'=' * 10}")
 

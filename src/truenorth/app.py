@@ -11,14 +11,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from langchain_core.messages import HumanMessage
-
 from truenorth.utils.progress import progress
 from truenorth.graph import build_rag_graph, save_graph_as_png
 from truenorth.api.routes import pdf
 from truenorth.utils.database import init_db, log_request, get_request_count, cleanup_old_logs
 from truenorth.utils.citation_manager import CitationManager
-from truenorth.agent.state import ChatState
-
+from truenorth.agent.state import (ChatState, get_state, build_messages_for_llm, summarize_history_if_long)
+from truenorth.utils.llm import call_llm
 # Get API base URL from environment, default to production
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.mytruenorth.app")
 
@@ -105,6 +104,7 @@ app.add_middleware(
 
 # === Model Input/Output ===
 class QueryInput(BaseModel):
+    snowflake: str 
     question: str
     chat_history: List[str] = []
     conversation_id: str = None
@@ -142,7 +142,10 @@ AGENT_STATUS_MESSAGES = {
 
 
 # === Core Functionality ===
-async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
+async def stream_workflow(
+    question: str, 
+    snowflake: str
+) -> AsyncGenerator[str, None]:
     """
     Streams workflow events and the final response as SSE.
     """
@@ -155,9 +158,18 @@ async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
     workflow = build_rag_graph(selected_analysts)
     agent = workflow.compile()
 
+    state = get_state(snowflake)
+
+    state.add_user_message(user_text)
+
+    summarize_history_if_long(state, model_name, model_provider)
+
+    messages = build_messages_for_llm(state, question)
+
     inputs = {
+        "snowflake": snowflake,
         "question": question,
-        "messages": [HumanMessage(content=question)],
+        "messages": messages,
         "data": [],
         "metadata": {
             "show_reasoning": True,
@@ -204,14 +216,18 @@ async def stream_workflow(question: str) -> AsyncGenerator[str, None]:
     # This replaces the entire block of manual metadata extraction
     citations, renumbered_response_text = CitationManager.resolve_citations(final_state)
 
+    state.add_agent_message(answer)
     # Yield final result
-    result = {"type": "result", "response": renumbered_response_text, "citations": citations, "conversation_id": "default"}
+    result = {"type": "result", "response": renumbered_response_text, "citations": citations, "conversation_id": "snowflake"}
     yield f"data: {json.dumps(result)}\n\n"
     yield "data: [DONE]\n\n"
 
 
 # Kept for backward compatibility
-async def invoke_llm(question: str) -> Tuple[str, List[Any], List[Citation]]:
+async def invoke_llm(
+    question: str,
+    snowflake: str
+) -> Tuple[str, ChatState, List[Citation]]:
     logger.info("Invoking chatbot (legacy invoke)...")
     progress.start()
     try:
@@ -222,10 +238,17 @@ async def invoke_llm(question: str) -> Tuple[str, List[Any], List[Citation]]:
         workflow = build_rag_graph(selected_analysts)
         agent = workflow.compile()
 
+        state = get_state(snowflake)
+
+        state.add_user_message(question)
+        summarize_history_if_long(state, model_name, model_provider,call_llm_fn=call_llm)
+        messages = build_messages_for_llm(state, question)
+
         final_state_dict = await agent.ainvoke(
-            {
+            {   
+                "snowflake": snowflake, 
                 "question": question,
-                "messages": [HumanMessage(content=question)],
+                "messages": messages,
                 "data": [],
                 "metadata": {
                     "show_reasoning": True,
@@ -239,6 +262,8 @@ async def invoke_llm(question: str) -> Tuple[str, List[Any], List[Citation]]:
         final_state = ChatState(**final_state_dict)
 
         response = final_state.generation
+
+        state.add_agent_message(response)
 
         # Use CitationManager for legacy endpoint too
         raw_citations, renumbered_response = CitationManager.resolve_citations(final_state)
@@ -256,7 +281,10 @@ async def get_chat_response(input_data: QueryInput, request: Request):
     # Enforce rate limit
     check_rate_limit(request)
 
-    response, final_state, citations = await invoke_llm(input_data.question)
+    response, final_state, citations = await invoke_llm(
+    input_data.question,
+    input_data.snowflake
+)
     return QueryOutput(response=response, usage={}, citations=citations)
 
 
@@ -275,7 +303,10 @@ async def stream_chat_response(request: Request):
     except json.JSONDecodeError:
         raise HTTPException(status_code=400, detail="Invalid JSON body")
 
-    return StreamingResponse(stream_workflow(input_data.question), media_type="text/event-stream")
+    return StreamingResponse(
+    stream_workflow(input_data.question, input_data.snowflake),
+    media_type="text/event-stream"
+)
 
 
 @app.get("/health")

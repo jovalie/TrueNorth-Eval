@@ -1,13 +1,12 @@
 from datetime import datetime
 from langchain_core.prompts import PromptTemplate
 from langchain_core.messages import SystemMessage
-
-
+from langchain_core.messages import HumanMessage
 from truenorth.agent.state import ChatState, show_agent_reasoning
 from truenorth.utils.llm import call_llm
 from truenorth.utils.logging import get_caller_logger
 from truenorth.utils.metaprompt import goals_as_str, system_relevant_scope
-
+from truenorth.agent.state import ChatState, show_agent_reasoning, summarize_history_if_long ,build_messages_for_llm, get_conversation, summarize_history_if_long
 logger = get_caller_logger()
 
 # Prepare template
@@ -20,12 +19,16 @@ Today is {current_datetime}.
 
 You do not replace a therapist, legal counsel, or HR department, but you can provide emotional support, educational context, helpful language, and confidential documentation tools.
 
-Only use the links as mentioned below to support your advice.
+Only use the links and chat history as mentioned below to support your advice.
 
 ---
 
 **Current Scope**:
 {system_relevant_scope}
+
+**Chat History**:
+{chat_history}
+
 
 You are TrueNorth. Your job is to respond conversationally while gently guiding the user toward meaningful, empowering, and relevant discussions 
 based on the resources in the knowledge base.
@@ -72,27 +75,60 @@ Always keep a short and concise manner of speaking.
 """
 )
 
-
 def chitter_chatter_agent(state: ChatState) -> ChatState:
-    """Chitter-Chatter Agent: Provides warm, fallback conversation when the input is off-topic or unclear."""
+    # Step 0: Add the latest user message to state & session
+    logger.info(f"Chat history length: {len(state.messages)}")
+    logger.info(f"Last message: {state.messages[-1].content}")
 
-    print("\n---CHIT-CHATTING---")
-    logger.info("[chitter_chatter_agent] Chit-chatting...")
+    snowflake = state.metadata.get("snowflake")
+    
+    messages_for_prompt = state.messages
 
-    current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    #Summarize history if too long
+    state = summarize_history_if_long(
+        state,
+        model_name=state.metadata["model_name"],
+        model_provider=state.metadata["model_provider"],
+        call_llm_fn=call_llm
+    )
 
-    last_user_message = state.question
+    # Prepare chat history for prompt
+    chat_history_text = "\n".join(
+        f"User: {m.content}" if isinstance(m, HumanMessage)
+        else f"Agent: {m.content}"
+        for m in messages_for_prompt
+    )
+    #Prepare LLM prompt
+    prompt = [
+        SystemMessage(chitterchatter_prompt_template.format(
+            current_datetime=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            goals_as_str=goals_as_str,
+            system_relevant_scope=system_relevant_scope,
+            chat_history=chat_history_text
+        )),
+         HumanMessage(content=state.question)
+    ]
+    logger.info(
+          "[answer_generator] PROMPT SENT TO LLM:\n{}".format(prompt),
+        )
+    #Call LLM
+    response = call_llm(
+        prompt=prompt,
+        model_name=state.metadata["model_name"],
+        model_provider=state.metadata["model_provider"],
+        pydantic_model=None,
+        agent_name="chitter_chatter_agent"
+    )
 
-    prompt = [SystemMessage(chitterchatter_prompt_template.format(current_datetime=current_datetime, goals_as_str=goals_as_str, system_relevant_scope=system_relevant_scope)), last_user_message]
+    #Update state & session with agent message
+    if response is None:
+        logger.error("[chitter_chatter] LLM returned None")
+        state.generation = ""
+        return state
 
-    # logger.info(f"Chitter-chatter Prompt: {prompt}")
+    if hasattr(response, "content"):
+        state.generation = response.content
+    else:
+        state.generation = str(response)
 
-    # Call LLM (no pydantic model, expecting just text)
-    response = call_llm(prompt=prompt, model_name=state.metadata["model_name"], model_provider=state.metadata["model_provider"], pydantic_model=None, agent_name="chitter_chatter_agent")
-
-    show_agent_reasoning(response, f"Chitter-chatter Response | " + state.metadata["model_name"])
-
-    # Update and return state
-    state.generation = str(response.content)
-    state.messages.append(response)
     return state

@@ -3,14 +3,15 @@
 # Environment
 PYTHON := poetry run python
 
-.PHONY: help install embed api ui test dev venv
+.PHONY: help install embed demo-embed demo-up web-demo demo-down api ui test tests eval venv dev
 
 help:
 	@echo "TrueNorth Makefile Commands:"
 	@echo "  install  - Install dependencies"
 	@echo "  embed    - Preprocess and embed PDFs into vector DB"
-	@echo "  demo-up  - Start demo services with Docker"
-	@echo "  demo-down - Stop demo services with Docker"
+	@echo "  demo-up  - Start web demo services with Docker"
+	@echo "  web-demo - same as demo-up"
+	@echo "  demo-down - Stop web demo services with Docker"
 	@echo "  api      - Run FastAPI server locally"
 	@echo "  ui       - Run Streamlit frontend locally"
 	@echo "  test     - Run similarity evaluator and tests"
@@ -28,7 +29,9 @@ demo-embed:
 	docker compose -f docker-compose.demo.yml run --rm demo-backend poetry run python src/Knowledge.py
 
 demo-up:
-	docker compose -f docker-compose.demo.yml up -d --build --remove-orphans
+	docker compose -f docker-compose.demo.yml up -d --build
+
+web-demo: demo-up
 
 demo-down:
 	docker compose -f docker-compose.demo.yml down
