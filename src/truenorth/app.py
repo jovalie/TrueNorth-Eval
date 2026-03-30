@@ -299,8 +299,9 @@ async def stream_chat_response(request: Request):
 
     try:
         data = await request.json()
-        input_data = QueryInput(**data)
-    except json.JSONDecodeError:
+        question = data.get("question")
+        snowflake = data.get("snowflake", "test")
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid JSON body")
 
     return StreamingResponse(

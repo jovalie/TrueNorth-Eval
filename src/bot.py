@@ -3,7 +3,7 @@ import random
 import discord
 #import google.generativeai as genai
 from dotenv import load_dotenv
-import requests
+import aiohttp #trying this instead of requests
 import re
 API_HOST = os.getenv("API_HOST")
 API_URL = f"{API_HOST}/query"
