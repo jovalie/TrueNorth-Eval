@@ -1,24 +1,20 @@
 FROM python:3.11-slim
-
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    bash
-
-RUN curl -sSL https://install.python-poetry.org | python3 -
-ENV PATH="/root/.local/bin:$PATH"
-# Prevent Python from buffering stdout and stderr
-ENV PYTHONUNBUFFERED=1
-# Enable file logging in container
-ENV LOG_TO_FILE=true
-
 WORKDIR /app
 
-COPY pyproject.toml ./
+RUN apt-get update && apt-get install -y build-essential curl && rm -rf /var/lib/apt/lists/*
 
-RUN poetry install --no-interaction --no-ansi --no-root
+# Copy ONLY the package files
+COPY pyproject.toml poetry.lock* /app/
 
-COPY . .
+RUN pip install poetry && poetry config virtualenvs.create false
 
-CMD ["/bin/bash"]
-#CMD ["poetry", "run", "python", "src/truenorth/main.py"]
+# This will now be CACHED unless you change a library
+RUN --mount=type=cache,target=/root/.cache/pypoetry \
+    poetry install --no-root --only main
+
+# Copy only the source code
+COPY . /app/
+
+# NOTICE: No truenorth-*.json files are copied here anymore
+EXPOSE 8000
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

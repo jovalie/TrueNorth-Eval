@@ -1,59 +1,50 @@
-# Makefile for TrueNorth Project
-
-# Environment
+# Variables
+VECTOR_STORE := vector_store/truenorth_kb_vectorstore
 PYTHON := poetry run python
 
-.PHONY: help install embed demo-embed demo-up web-demo demo-down api ui test tests eval venv dev
+.PHONY: help build run run-interactive stop dev clean logs restart embed
 
 help:
 	@echo "TrueNorth Makefile Commands:"
-	@echo "  install  - Install dependencies"
-	@echo "  embed    - Preprocess and embed PDFs into vector DB"
-	@echo "  demo-up  - Start web demo services with Docker"
-	@echo "  web-demo - same as demo-up"
-	@echo "  demo-down - Stop web demo services with Docker"
-	@echo "  api      - Run FastAPI server locally"
-	@echo "  ui       - Run Streamlit frontend locally"
-	@echo "  test     - Run similarity evaluator and tests"
-	@echo "  eval     - Run design-centered evaluation"
-	@echo "  dev      - Instructions for running API and UI concurrently"
-	@echo "  venv     - Instructions to activate virtual environment"
+	@echo "  build     - Build Docker containers"
+	@echo "  run       - Start services in detached mode (builds vector store if needed)"
+	@echo "  run-interactive - Start services in foreground (builds vector store if needed)"
+	@echo "  stop      - Stop Docker services"
+	@echo "  dev       - Stop, rebuild, and start services interactively"
+	@echo "  embed     - Build/rebuild vector store from PDFs"
+	@echo "  logs      - Follow Docker logs"
+	@echo "  restart   - Restart Docker services"
+	@echo "  clean     - Remove all Docker containers, images, and volumes"
 
-install:
-	poetry install
+build:
+	@echo "🧹 Removing old images..."
+	docker-compose down --rmi local 2>/dev/null || true
+	@echo "🔨 Building new images..."
+	docker-compose build
+
+run: $(VECTOR_STORE)
+	docker-compose up -d
+
+$(VECTOR_STORE):
+	@echo "📦 Vector store not found. Building it now..."
+	$(PYTHON) knowledge.py
+
+run-interactive: $(VECTOR_STORE)
+	docker-compose up
+
+stop:
+	docker-compose down
 
 embed:
-	$(PYTHON) src/Knowledge.py
+	$(PYTHON) knowledge.py
 
-demo-embed:
-	docker compose -f docker-compose.demo.yml run --rm demo-backend poetry run python src/Knowledge.py
+dev: stop build run-interactive
 
-demo-up:
-	docker compose -f docker-compose.demo.yml up -d --build
+logs:
+	docker-compose logs -f
 
-web-demo: demo-up
+restart:
+	docker-compose restart
 
-demo-down:
-	docker compose -f docker-compose.demo.yml down
-
-api:
-	PYTHONPATH=./src poetry run uvicorn truenorth.app:app --host 0.0.0.0 --port 8000 --reload
-
-ui:
-	poetry run streamlit run src/streamlit_ui.py
-
-test:
-	@echo "Running local test script..."
-	@chmod +x ./src/test_server.sh && ./src/test_server.sh
-
-tests:
-	@chmod +x ./src/test_examples.sh && ./src/test_examples.sh && $(PYTHON) src/similarity_evaluator.py
-
-eval:
-	$(PYTHON) src/design_evaluator.py
-
-venv:
-	@echo "Activate virtual environment with: source .venv/bin/activate"
-
-dev:
-	@echo "Run 'make api' and 'make ui' in separate terminals."
+clean:
+	docker-compose down --rmi all --volumes

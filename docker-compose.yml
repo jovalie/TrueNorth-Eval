@@ -1,18 +1,49 @@
-version: "3.9"
-
 services:
-  truenorth:
-    build: .
-    container_name: truenorth
-    env_file:
-      - .env
-    volumes:
-      - .:/app        # mount source code for dev
-      - faiss_data:/app/src/vector_store  # persist FAISS vector store
-      - ./src/books_pdf:/app/src/books_pdf # pdf book test
+  postgres:
+    image: postgres:16-alpine
+    container_name: truenorth-postgres
     ports:
-      - "8000:8000"   # backend server port
-    stdin_open: true
-    tty: true
-volumes:
-  faiss_data:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-truenorth}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-truenorth}
+      POSTGRES_DB: ${CHAT_STATE_DB_NAME:-truenorth_chat}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  truenorth-eval:
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app.py:/app/app.py
+      - ./pyproject.toml:/app/pyproject.toml
+      - ./poetry.lock:/app/poetry.lock
+      - ./vector_store:/app/vector_store
+      - ./books_pdf:/app/books_pdf
+      - ./.env:/app/.env
+      - ./truenorth-472018-c636b2948f1d.json:/app/truenorth-472018-c636b2948f1d.json:ro
+      - ./.logs:/app/.logs
+    environment:
+      PYTHONUNBUFFERED: "1"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: ${POSTGRES_USER:-truenorth}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-truenorth}
+      CHAT_STATE_DB_NAME: ${CHAT_STATE_DB_NAME:-truenorth_chat}
+      CHAT_LOG_DB_NAME: ${CHAT_LOG_DB_NAME:-truenorth_logs}
+      POSTGRES_ADMIN_DB_NAME: postgres
+    restart: unless-stopped

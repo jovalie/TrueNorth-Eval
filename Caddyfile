@@ -1,3 +1,3 @@
-localhost {
+api.mytruenorth.app {
     reverse_proxy demo-backend:8000
 }
