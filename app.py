@@ -118,6 +118,7 @@ CHAT_STATE_DB_NAME = os.getenv("CHAT_STATE_DB_NAME", "truenorth_chat")
 CHAT_LOG_DB_NAME = os.getenv("CHAT_LOG_DB_NAME", "truenorth_logs")
 DB_CONNECT_RETRIES = int(os.getenv("DB_CONNECT_RETRIES", "10"))
 DB_CONNECT_RETRY_DELAY_SECONDS = float(os.getenv("DB_CONNECT_RETRY_DELAY_SECONDS", "2"))
+THINK_MODEL_NAME = os.getenv("MODEL_NAME_THINK", "models/gemini-3.1-pro-preview")
 if not os.path.exists(VECTOR_STORE_PATH):
     logger.warning(f"Vector store directory not found at {VECTOR_STORE_PATH}. Please ensure it exists.")
 if not os.path.exists(BOOKS_DIR):
@@ -1880,7 +1881,7 @@ def chitter_chatter_agent(state: ChatState) -> ChatState:
     logger.info(f"Question: {state.question}")
     logger.info(f"Chat history length: {len(state.messages)} messages")
     
-    state = summarize_history_if_long(state, state.metadata["model_name"], state.metadata["model_provider"], call_llm)
+    state = summarize_history_if_long(state, THINK_MODEL_NAME, state.metadata["model_provider"], call_llm)
     hist = "\n".join(f"User: {m.content}" if isinstance(m, HumanMessage) else f"Agent: {m.content}" for m in state.messages)
     logger.info(f"Chat history prepared, total chars: {len(hist)}")
     
@@ -1903,7 +1904,7 @@ def chitter_chatter_agent(state: ChatState) -> ChatState:
     ]
     
     logger.info("Generating conversational response...")
-    response = call_llm(prompt, state.metadata["model_name"], state.metadata["model_provider"], None, agent_name="chitter_chatter")
+    response = call_llm(prompt, THINK_MODEL_NAME, state.metadata["model_provider"], None, agent_name="chitter_chatter")
     content = str(response.content) if hasattr(response, "content") else str(response)
     state.generation = content
     
@@ -2141,7 +2142,7 @@ def answer_generator(state: ChatState) -> ChatState:
         source_context=context, chat_history=hist, question=question_with_intent
     ) + style_instructions
     
-    model_name = os.getenv("MODEL_NAME_THINK", "models/gemini-3.1-pro-preview")
+    model_name = THINK_MODEL_NAME
     logger.info(f"Generating answer with model: {model_name}")
     
     response = call_llm(prompt, model_name, os.getenv("MODEL_PROVIDER", "Google"), AnswerResponse)
