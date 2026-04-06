@@ -157,7 +157,7 @@ class LLMModel(BaseModel):
         return self.model_name.startswith("deepseek")
 
     def is_gemini(self) -> bool:
-        return self.model_name.startswith("gemini")
+        return self.provider == ModelProvider.GEMINI
 
     def is_ollama(self) -> bool:
         return self.provider == ModelProvider.OLLAMA
@@ -171,6 +171,7 @@ AVAILABLE_MODELS = [
     LLMModel(display_name="[gemini] gemini-2.0-flash", model_name="gemini-2.0-flash", provider=ModelProvider.GEMINI),
     LLMModel(display_name="[gemini] gemini-2.5-flash", model_name="gemini-2.5-flash", provider=ModelProvider.GEMINI),
     LLMModel(display_name="[gemini] gemini-2.5-pro", model_name="gemini-2.5-pro-exp-03-25", provider=ModelProvider.GEMINI),
+    LLMModel(display_name="[gemini] deep-research-pro-preview", model_name="models/deep-research-pro-preview-12-2025", provider=ModelProvider.GEMINI),
     LLMModel(display_name="[gemini] gemini-3-pro-preview", model_name="gemini-3-pro-preview", provider=ModelProvider.GEMINI),
     LLMModel(display_name="[groq] llama-4-scout-17b", model_name="meta-llama/llama-4-scout-17b-16e-instruct", provider=ModelProvider.GROQ),
     LLMModel(display_name="[groq] llama-4-maverick-17b", model_name="meta-llama/llama-4-maverick-17b-128e-instruct", provider=ModelProvider.GROQ),
