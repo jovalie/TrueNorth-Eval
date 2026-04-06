@@ -2,14 +2,12 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: truenorth-postgres
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-truenorth}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-truenorth}
       POSTGRES_DB: ${CHAT_STATE_DB_NAME:-truenorth_chat}
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - ${POSTGRES_DATA_DIR:-/mnt/volume_sfo3_01/postgres_data}:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
@@ -25,8 +23,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     volumes:
       - ./app.py:/app/app.py
       - ./pyproject.toml:/app/pyproject.toml
@@ -46,3 +44,21 @@ services:
       CHAT_LOG_DB_NAME: ${CHAT_LOG_DB_NAME:-truenorth_logs}
       POSTGRES_ADMIN_DB_NAME: postgres
     restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: truenorth-caddy
+    depends_on:
+      - truenorth-eval
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,3 +1,10 @@
 api.mytruenorth.app {
-    reverse_proxy demo-backend:8000
+    tls {
+        issuer acme {
+            # Some edge proxies/firewalls block ACME ALPN negotiation.
+            disable_tlsalpn_challenge
+        }
+    }
+
+    reverse_proxy truenorth-eval:8000
 }
