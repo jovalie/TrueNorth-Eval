@@ -22,7 +22,7 @@ langgraph = "0.2.56"
 # --- Model Providers ---
 langchain-anthropic = "^0.3.5"
 langchain-groq = "^0.2.3"
-langchain-google-genai = "^2.0.11"
+langchain-google-genai = ">=2.1.1"
 langchain-google-vertexai = "^2.0.13"
 langchain-openai = "^0.3.5"
 langchain-deepseek = "^0.1.2"
